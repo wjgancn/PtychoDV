@@ -1,0 +1,56 @@
+dataset:
+
+    WavePro:
+
+        path: data # Path to the dataset.
+
+        num_meas_range: 64 # Number of measurements, denoted as N in the paper.
+        spa_meas_range: 11 # Probe spacing between neighboring scan positions.
+
+        tra_indexes: [ 1, 60000 ]  # Data indexes used for training.
+        val_indexes: [ 60001, 60001 ]  # Data indexes used for validation.
+        tst_indexes: [ 64001, 64002 ]  # Data indexes used for testing.
+
+        probe_idx_range: 2 # Probe index.
+
+        is_add_noise: true # Flag indicating whether to add noise to the measurements.
+        photon_rate: 100000 # Parameter for the noise distribution.
+        shot_noise_pm: 0.5 # Parameter for the noise distribution.
+
+method:
+
+    merger_du:
+        is_use_cnn: true  # Flag indicating whether to use a CNN in deep unfolding.
+        iteration: 3 # Number of deep unfolding iterations.
+
+    ViT:
+        image_size: 400  # Size of the ground truth images, denoted as n in the paper.
+        patch_size: 256  # Size of the measurement patches, denoted as m in the paper.
+        dim: 1024  # Dimension of the embedding layer.
+        dim_head: 128  # Dimension of the data in each attention head within the transformer module.
+        depth: 8  # Number of repetitions of the attention module in the transformer module.
+        heads: 8  # Number of attention heads in the transformer module.
+
+    loss:
+
+        fn: 'l2'  # Type of the loss function.
+
+        mode: 'real_imag'  # Mode of the loss function.
+
+        coff_loss_fwd_patch: 0  # Coefficient for the patch-wise loss function between the predicted measurement and raw data (not used in the paper).
+        coff_loss_gt_patch: 1  # Coefficient for the patch-wise loss function between predicted image patches and the corresponding ground truth.
+
+        coff_loss_fwd: 0  # Coefficient for the image-wise loss function between the predicted measurement and raw data (not used in the paper).
+        coff_loss_gt: 1  # Coefficient for the image-wise loss function between the predicted images and the corresponding ground truth.
+
+train:
+
+    lr: 0.00005  # Learning rate for training.
+    batch_size: 1  # Batch size for training.
+    max_epochs: 30  # Number of epochs for training.
+    every_n_epochs: 1  # Number of epochs between saving checkpoints.
+    num_workers: 8  # Number of workers for the PyTorch DataLoader.
+
+test:
+
+    checkpoint_path: pretrained_models/noisy_checkpoint.ckpt  # Path to the pre-trained checkpoint.

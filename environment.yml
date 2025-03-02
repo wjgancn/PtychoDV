@@ -1,0 +1,20 @@
+name: ptychodv
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pytorch=1.13
+  - lightning=2.2
+  - matplotlib
+  - numpy<2
+  - h5py
+  - scipy
+  - tifffile
+  - pyfftw
+  - imageio
+  - pandas
+  - einops
+  - mkl=2024.0.0
